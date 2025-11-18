@@ -1,18 +1,21 @@
 #include <Arduino.h>
+#include "Heartbeat.h"
+#include "configs.h"
 
-// put function declarations here:
-int myFunction(int, int);
+Heartbeat heartbeat = Heartbeat();
 
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+float sensorData = 0.0;
+
+void setup()
+{
+  Serial.begin(115200);
+  heartbeat.begin();
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+void loop()
+{
+  heartbeat.loop();
+  sensorData = heartbeat.getSensorData();
+  Serial.print(sensorData);
+  Serial.println(" BPM");
 }
