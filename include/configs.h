@@ -1,0 +1,12 @@
+#ifndef CONFIGS_H
+#define CONFIGS_H
+
+#define CONFIG_KY039_PIN 34
+
+#define CONFIG_TAB_LENGTH 4
+
+#define CONFIG_RISE_THRESHOLD 5
+
+#define CONFIG_CALIB_OFFSET 0
+
+#endif //!__CONFIGS__H__
