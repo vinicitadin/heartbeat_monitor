@@ -8,29 +8,21 @@ Comm::Comm() : client(espClient)
 }
 
 void Comm::begin()
-{
-    Serial.println(CONFIG_WIFI_SSID);
-    
+{    
     WiFi.begin(CONFIG_WIFI_SSID, CONFIG_WIFI_PASSWORD);
     client.setServer(CONFIG_MQTT_SERVER, CONFIG_MQTT_PORT);
     
     unsigned long startAttempt = millis();
     while (WiFi.status() != WL_CONNECTED && millis() - startAttempt < CONFIG_WIFI_TIMEOUT_MS)
     {
-        Serial.print(".");
         delay(500);
     }
-    Serial.println();
     
     wifiConnected = (WiFi.status() == WL_CONNECTED);
     
     if (wifiConnected)
     {
         connectMQTT();
-    }
-    else
-    {
-        Serial.println(WiFi.status());
     }
 }
 
@@ -66,7 +58,6 @@ bool Comm::connectMQTT()
     }
     else
     {
-        Serial.println(client.state());
         mqttConnected = false;
     }
     
