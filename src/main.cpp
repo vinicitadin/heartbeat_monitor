@@ -5,6 +5,7 @@
 Heartbeat heartbeat = Heartbeat();
 
 float sensorData = 0.0;
+float lastSensorData = 0.0;
 
 void setup()
 {
@@ -16,6 +17,11 @@ void loop()
 {
   heartbeat.loop();
   sensorData = heartbeat.getSensorData();
-  Serial.print(sensorData);
-  Serial.println(" BPM");
+
+  if (sensorData != lastSensorData)
+  {
+    lastSensorData = sensorData;
+    Serial.print(sensorData);
+    Serial.println(" BPM");
+  }
 }
