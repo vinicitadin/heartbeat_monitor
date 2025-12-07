@@ -4,6 +4,7 @@
 #include "Credentials.h"
 
 #define CONFIG_KY039_PIN 34
+#define CONFIG_BUZZER_PIN 25
 
 #define CONFIG_TAB_LENGTH 4
 
@@ -12,6 +13,9 @@
 #define CONFIG_CALIB_OFFSET 0
 
 #define CONFIG_SENSOR_TIMER_READ 20
+
+#define CONFIG_BUZZER_MSG_ON "1"
+#define CONFIG_BUZZER_MSG_OFF "0"
 
 #define CONFIG_WIFI_SSID WIFI_SSID
 #define CONFIG_WIFI_PASSWORD WIFI_PASSWORD
@@ -22,6 +26,7 @@
 #define CONFIG_MQTT_PASSWORD "***"
 #define CONFIG_MQTT_PORT 1883
 #define CONFIG_MQTT_PUB_TOPIC "heartbeat/monitor"
+#define CONFIG_MQTT_SUB_TOPIC "heartbeat/response"
 #define CONFIG_MQTT_INTERVAL_TIME 20000
 #define CONFIG_MQTT_RECONNECT_INTERVAL_MS 5000
 
