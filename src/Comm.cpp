@@ -11,7 +11,12 @@ void Comm::begin()
 {    
     WiFi.begin(CONFIG_WIFI_SSID, CONFIG_WIFI_PASSWORD);
     client.setServer(CONFIG_MQTT_SERVER, CONFIG_MQTT_PORT);
-    
+
+    client.setCallback([this](char* topic, uint8_t* payload, unsigned int length) 
+    {
+        this->callback(topic, payload, length);
+    });
+
     unsigned long startAttempt = millis();
     while (WiFi.status() != WL_CONNECTED && millis() - startAttempt < CONFIG_WIFI_TIMEOUT_MS)
     {
@@ -55,6 +60,7 @@ bool Comm::connectMQTT()
     if (connected)
     {
         mqttConnected = true;
+        client.subscribe(CONFIG_MQTT_SUB_TOPIC);
     }
     else
     {
@@ -97,6 +103,26 @@ void Comm::publish(float data)
     char messageData[10];
     sprintf(messageData, "%.1f", data);
     client.publish(CONFIG_MQTT_PUB_TOPIC, messageData);
+}
+
+void Comm::callback(char* topic, uint8_t* payload, unsigned int length)
+{
+    payload[length] = '\0';
+    String receivedData = String((char *)payload);
+
+    String topicString = String(topic);
+
+    if (topicString.equals(CONFIG_MQTT_SUB_TOPIC)) 
+    {
+        callbackMessage = receivedData;
+        Serial.print("Mensagem MQTT recebida: ");
+        Serial.println(receivedData);
+    } 
+    else
+    {
+        Serial.print("Mensagem em tópico não esperado: ");
+        Serial.println(topicString);
+    }
 }
 
 bool Comm::isConnected()
