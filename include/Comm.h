@@ -14,7 +14,8 @@ private:
     float data;
     bool wifiConnected;
     bool mqttConnected;
-    
+    String callbackMessage;
+
     bool connectWiFi();
     bool connectMQTT();
 public:
@@ -22,7 +23,9 @@ public:
     void begin();
     void loop();
     void publish(float data);
+    void callback(char* topic, uint8_t* payload, unsigned int length);
     bool isConnected();
+    String getCallbackMessage() { return callbackMessage; }
 };
 
 #endif  //!__COMM__H__
