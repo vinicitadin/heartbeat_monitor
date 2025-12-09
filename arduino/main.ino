@@ -42,6 +42,7 @@ float analogSum;
 float lastRead;
 float analogAverage;
 float readStartTime;
+float sensorData;
 float firstTime;
 float secondTime;
 float thirdTime;
@@ -53,7 +54,6 @@ long int lastBeat;
 long int currentTime;
 long int ptr;
 
-float sensorData = 0.0;
 String callbackMessage = "";
 float lastSensorData = 0.0;
 String lastCallbackMessage = "";
@@ -100,7 +100,6 @@ void setup()
     while (WiFi.status() != WL_CONNECTED && millis() - startAttempt < CONFIG_WIFI_TIMEOUT_MS)
     {
         delay(500);
-        Serial.print(".");
     }
     
     wifiConnected = (WiFi.status() == WL_CONNECTED);
@@ -118,32 +117,31 @@ void loop()
     lastRead = averageRead();
     checkForBeat();
 
-    if (!connectWiFi())
+    if (connectWiFi())
     {
-        return;
-    }
-    
-    if (!client.connected())
-    {
-        mqttConnected = false;
-        unsigned long now = millis();
-        if (now - lastReconnectAttempt > CONFIG_MQTT_RECONNECT_INTERVAL_MS)
+        if (!client.connected())
         {
-            lastReconnectAttempt = now;
-            connectMQTT();
+            mqttConnected = false;
+            unsigned long now = millis();
+            if (now - lastReconnectAttempt > CONFIG_MQTT_RECONNECT_INTERVAL_MS)
+            {
+                lastReconnectAttempt = now;
+                connectMQTT();
+            }
+        }
+        else
+        {
+            client.loop();
+        }
+
+        if (callbackMessage != lastCallbackMessage)
+        {
+            lastCallbackMessage = callbackMessage;
+            setBuzzerData(callbackMessage);
         }
     }
-    else
-    {
-        client.loop();
-    }
-
-    if (callbackMessage != lastCallbackMessage)
-    {
-        lastCallbackMessage = callbackMessage;
-        setBuzzerData(callbackMessage);
-    }
-    if (sensorData != lastSensorData)
+    
+    if (sensorData > 0 && sensorData != lastSensorData)
     {
         lastSensorData = sensorData;
         Serial.print(sensorData);
