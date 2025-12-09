@@ -25,8 +25,8 @@
 #define CONFIG_MQTT_USER "***"
 #define CONFIG_MQTT_PASSWORD "***"
 #define CONFIG_MQTT_PORT 1883
-#define CONFIG_MQTT_PUB_TOPIC "heartbeat/monitor"
-#define CONFIG_MQTT_SUB_TOPIC "heartbeat/response"
+#define CONFIG_MQTT_PUB_TOPIC "unesciot/heartbeat/monitor"
+#define CONFIG_MQTT_SUB_TOPIC "unesciot/heartbeat/response"
 #define CONFIG_MQTT_INTERVAL_TIME 20000
 #define CONFIG_MQTT_RECONNECT_INTERVAL_MS 5000
 
